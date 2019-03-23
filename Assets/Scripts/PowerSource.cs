@@ -5,6 +5,7 @@ using UnityEngine;
 public class PowerSource : MonoBehaviour
 {
 private TowerDictionary towerDict;
+private PlayerData player;
 public List<GameObject> Towers = new List<GameObject>();
 private GameObject socketTower;
 private int Energy = 100;
@@ -15,6 +16,7 @@ private Vector2 mousePos;
 private LayerMask inputLayerMasks;
 void Start()
 {
+    player = FindObjectOfType<PlayerData>();
     towerDict = FindObjectOfType<TowerDictionary>();
     curEnergy = Energy;
 }
@@ -47,6 +49,11 @@ private void HandleTowerPlacement()
     }
 }
 
+public void SpendPlayerCurrency(int value)
+{
+    player.AdjustCurrency(false, value);
+}
+
 public void TowerSpawnBtn()
 {
     NewTowerAction(0);          //Basic Tower
@@ -72,13 +79,15 @@ private void NewTowerAction(int towerID)
     if(spawnTower != null)
     {
         int Cost = spawnTower.GetComponent<Tower>().Cost;
-        if(Cost <= currency)
+        if(Cost <= player.Currency)
         {
-            currency -= Cost;
+            player.AdjustCurrency(false, Cost);
             SpawnTower(spawnTower);
         }
     }        
 }
+
+
 
 private void SpawnTower(GameObject spawnTower)
 {

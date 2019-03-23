@@ -39,6 +39,11 @@ public class Tower : MonoBehaviour
         }      
     }
 
+    public void OnEnable()
+    {
+        
+    }
+
     public void UpdateEnergy(int newValue)
     {
         curEnergyCharge = newValue;
@@ -85,6 +90,7 @@ public class Tower : MonoBehaviour
         PowerSource source = FindObjectOfType<PowerSource>();
         if(source.currency > upgradeCosts[curUpgradeStage])
         {
+            source.SpendPlayerCurrency(upgradeCosts[curUpgradeStage]);
             curUpgradeStage++;
             powerModifier += 0.5f;
         }
