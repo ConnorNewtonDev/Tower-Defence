@@ -28,6 +28,12 @@ public class Tower : MonoBehaviour
     }
     public virtual void Update()
     {
+        DetectTouch();
+    
+    }
+
+    private void DetectTouch()
+    {
         RaycastHit hit; 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);             
         if ( Physics.Raycast (ray,out hit,100.0f)) 
@@ -36,9 +42,8 @@ public class Tower : MonoBehaviour
             {
                 ToggleOptions();
             }
-        }      
+        }  
     }
-
     public void OnEnable()
     {
         

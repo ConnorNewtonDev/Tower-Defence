@@ -16,12 +16,10 @@ public class Enemy : MonoBehaviour
     
     public void Spawned(EnemyData data, Transform[] path)
     {
-        Debug.Log(path);
         moveSpeed = data.Speed;
         Health = data.Health;
         Object = Instantiate(data.Object, this.transform.position, this.transform.rotation, this.transform);  
         nodes = path;
-        Debug.Log(nodes);
     }
 
     // Update is called once per frame
