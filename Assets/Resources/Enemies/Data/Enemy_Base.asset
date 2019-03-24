@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 10
   Speed: 2
+  Worth: 5
   Object: {fileID: 4620541678192667129, guid: 320b49d5af981b84a8c8b0f6563a7619, type: 3}

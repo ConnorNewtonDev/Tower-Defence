@@ -28,4 +28,8 @@ public class PlayerData : MonoBehaviour
         AdjustCurrency(true, 50);
     }
 
+    public void OnEnemyKilled(int val, GameObject obj)
+    {
+        AdjustCurrency(true, val);
+    }
 }

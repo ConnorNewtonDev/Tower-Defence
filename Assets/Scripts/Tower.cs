@@ -5,31 +5,48 @@ using UnityEngine.UI;
 public class Tower : MonoBehaviour
 {
     public int Cost;
-    private int curUpgradeStage = 0;
-    public int curEnergyCharge;
-    public int FullPowerThreshhold;
-    public int LowPowerThreshhold;
-    private float powerModifier = 0;
+    public Canvas optionsCanvas;
     public enum PowerState{FULL, PARTIAL, OFF};
     public PowerState powerState;
-    public Canvas optionsCanvas;
+    public int FullPowerThreshhold;
+    public int LowPowerThreshhold;
+
+    public GameObject projectile;
+    private Transform firePoint;
+    private int curEnergyCharge;
+    private int curUpgradeStage = 0;    
     private int[] upgradeCosts = new int[3];
-    
-    
+    private float fireDelay = 0;
+
+    #region Range Detection
+    public List<GameObject> inRange;
+    private SphereCollider range;
+
+    private enum Targeting {FIRST, MIDDLE, LAST};
+    private Targeting targetingChocie = Targeting.FIRST;
+
+    #endregion
     void Start()
     {
+        inRange = new List<GameObject>();
         this.GetComponent<MeshRenderer>().enabled = false;
+        range = this.GetComponent<SphereCollider>();
+        //TODO: Set radius here
         ToggleOptions();
         upgradeCosts =  new int[]{(Cost), (Cost * 3), (Cost * 3)};
+        firePoint = this.transform.Find("FirePoint").gameObject.transform;
     }
     public void Spawn()
     {
         this.GetComponent<MeshRenderer>().enabled = true;
     }
+
+#region Updates
     public virtual void Update()
     {
         DetectTouch();
-    
+
+            HandleAttack();
     }
 
     private void DetectTouch()
@@ -44,10 +61,28 @@ public class Tower : MonoBehaviour
             }
         }  
     }
-    public void OnEnable()
-    {
-        
-    }
+   
+   private void HandleAttack()
+   {
+       if(fireDelay < 0.0f)
+       {
+        if(inRange.Count > 0)
+            {
+                GameObject target = GetTarget();
+                if(target != null)
+                {
+                GameObject spawnedObj = Instantiate(projectile, firePoint.position, firePoint.rotation, null);
+                spawnedObj.GetComponent<Projectile>().target = target;
+                fireDelay = projectile.GetComponent<Projectile>().fireRate;
+                }
+            }            
+       }
+       else
+       {
+           fireDelay -= Time.deltaTime;
+       }
+   }
+
 
     public void UpdateEnergy(int newValue)
     {
@@ -69,12 +104,8 @@ public class Tower : MonoBehaviour
         }            
     }
 
-
-    public virtual void Fire()
-    {}
-
-
-
+#endregion
+  
 #region Buttons
     public virtual void ToggleOptions()
     {
@@ -97,7 +128,6 @@ public class Tower : MonoBehaviour
         {
             source.SpendPlayerCurrency(upgradeCosts[curUpgradeStage]);
             curUpgradeStage++;
-            powerModifier += 0.5f;
         }
         else
         {
@@ -108,8 +138,62 @@ public class Tower : MonoBehaviour
 
 #endregion
 
+ private GameObject GetTarget()
+   {
+       int targetNode = 0;
+       GameObject target = null;
+       
+       switch(targetingChocie)
+       {
+        case Targeting.FIRST:
+        {
+            foreach(GameObject enemy in inRange)
+            {
+                Enemy temp = enemy.GetComponent<Enemy>();
+                if(temp.GetNodeIndex() > targetNode)
+                {
+                    target = enemy;
+                    targetNode = temp.GetNodeIndex();
+                }
+            }
+            break;
+        }
+        case Targeting.MIDDLE:
+        {
+            target = null;
+            break;
+        }
+        case Targeting.LAST:
+        {
+            target = null;
+            break;
+        }
+       }
+        return target;
+   }
+
+//Subscribed to EnemyDeathDelegate (val = worth, obj = Object)
+    public void OnEnemyKilled(int val, GameObject obj)
+    {
+        inRange.Remove(obj);
+    }
 
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Enemy")
+        {
+            inRange.Add(other.transform.parent.gameObject);
+            other.transform.parent.GetComponent<Enemy>().deathEvent += OnEnemyKilled;
+        }
+    }
 
-
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Enemy")
+        {
+            inRange.Remove(other.gameObject.transform.parent.gameObject);
+            other.transform.parent.GetComponent<Enemy>().deathEvent -= OnEnemyKilled;
+        }
+    }
 }

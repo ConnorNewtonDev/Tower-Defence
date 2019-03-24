@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Available
   - Occupied
+  - Enemy
   layers:
   - Default
   - TransparentFX

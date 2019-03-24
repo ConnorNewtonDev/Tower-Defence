@@ -13,10 +13,11 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     private float spawnDelay = 3;
     private Vector3 spawnPoint;
+    private PlayerData pData;
     void Start()
     {
         path = GameObject.Find("Path").transform;
-
+        pData = FindObjectOfType<PlayerData>();
         for(int i = 0; i < path.childCount; i++)
         {
             nodes.Add(path.GetChild(i).transform);
@@ -34,6 +35,8 @@ public class EnemySpawner : MonoBehaviour
                 GameObject enemy = Instantiate(enemyPrefab, spawnPoint, nodes[0].transform.rotation, null);
                 enemy.GetComponent<Enemy>().Spawned(spawns[0].Data, nodes.ToArray());
                 spawns.RemoveAt(0);
+                enemy.GetComponent<Enemy>().deathEvent += pData.OnEnemyKilled;
+                
                 if(spawns.Count == 0)
                     ToggleSpawning();
                 else

@@ -4,22 +4,35 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
+#region Stats
+[SerializeField]
     private int Health;
+    private int Worth;
     public float moveSpeed;
     public float moveMofifier = 1.0f;
     private GameObject Object;
+#endregion
 
+#region Navigation
     private NavMeshAgent navComponent;
     public Transform[] nodes;
     private int nodeIndex = 0;
     
+#endregion
+
+    public delegate void DeathDelegate(int val, GameObject obj);
+    public DeathDelegate deathEvent;
+
+  
+  
     public void Spawned(EnemyData data, Transform[] path)
     {
         moveSpeed = data.Speed;
         Health = data.Health;
+        Worth = data.Worth;
         Object = Instantiate(data.Object, this.transform.position, this.transform.rotation, this.transform);  
         nodes = path;
+
     }
 
     // Update is called once per frame
@@ -27,6 +40,18 @@ public class Enemy : MonoBehaviour
     {
         if(nodes.Length > 0)
         Move();
+    }
+
+    public void Damage(int dmg)
+    {
+        if(Health - dmg <= 0)
+        {
+            Died();
+        }
+        else
+        {
+            Health -= dmg;
+        }
     }
 
     private void Move()
@@ -48,6 +73,15 @@ public class Enemy : MonoBehaviour
         } 
     }
 
+    public int GetNodeIndex()
+    {
+        return nodeIndex;
+    }
+    public void Died()
+    {            
+        deathEvent(Worth, this.gameObject);
+        Destroy(this.gameObject);
+    }
     public void Survived() //When the Enemy reaches the end of the path
     {
         Destroy(this.gameObject);

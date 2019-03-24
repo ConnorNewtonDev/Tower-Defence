@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9189788773897176855}
   - component: {fileID: 852517710283126210}
   - component: {fileID: 4740308820249839311}
+  - component: {fileID: 4273337594857011194}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -32,6 +33,7 @@ Transform:
   m_LocalScale: {x: 1, y: 2.1006, z: 1}
   m_Children:
   - {fileID: 4264691877141450502}
+  - {fileID: 7303877064801044524}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -106,11 +108,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cost: 10
-  curEnergyCharge: 0
+  optionsCanvas: {fileID: 1860962867192907784}
+  powerState: 0
   FullPowerThreshhold: 40
   LowPowerThreshhold: 10
-  powerState: 0
-  optionsCanvas: {fileID: 1860962867192907784}
+  projectile: {fileID: 5916375884624167896, guid: 1d4d3ec575401ca4eb4768421c3ad148, type: 3}
+--- !u!135 &4273337594857011194
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484634873754577159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.2
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &726246822619578643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7303877064801044524}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7303877064801044524
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726246822619578643}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.666, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6713740263530654044}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &907044337491691344
 GameObject:
   m_ObjectHideFlags: 0
