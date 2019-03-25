@@ -7,6 +7,8 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     public float fireRate;
     public int damage;
+
+    public float moveSpeed;
     public GameObject target;
     void Start()
     {
@@ -19,7 +21,8 @@ public class Projectile : MonoBehaviour
         if(target != null)
         {
         this.transform.LookAt(target.transform, Vector3.up);
-        this.transform.position = Vector3.Lerp(this.transform.position, target.transform.position, 0.25f);
+        //this.transform.position = Vector3.Lerp(this.transform.position, target.transform.position, 0.25f);
+        this.transform.position = Vector3.MoveTowards(this.transform.position, target.transform.position, moveSpeed * Time.deltaTime);
         }
     }
 

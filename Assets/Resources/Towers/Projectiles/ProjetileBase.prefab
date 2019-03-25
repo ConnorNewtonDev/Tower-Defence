@@ -9587,6 +9587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireRate: 3
   damage: 4
+  moveSpeed: 10
   target: {fileID: 0}
 --- !u!136 &7285880685178962501
 CapsuleCollider:

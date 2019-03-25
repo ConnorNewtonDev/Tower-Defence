@@ -56,7 +56,8 @@ public void SpendPlayerCurrency(int value)
 
 public void TowerSpawnBtn()
 {
-    NewTowerAction(0);          //Basic Tower
+    if(socketTower == null)
+        NewTowerAction(0);          //Basic Tower
 }
 
 public int UpdatePower()
@@ -86,8 +87,6 @@ private void NewTowerAction(int towerID)
         }
     }        
 }
-
-
 
 private void SpawnTower(GameObject spawnTower)
 {

@@ -57,20 +57,17 @@ public class Enemy : MonoBehaviour
     private void Move()
     {
         Vector3 nodePos = new Vector3(nodes[nodeIndex].position.x, 1.5f, nodes[nodeIndex].position.z);
-        Vector3 direction = nodePos - this.transform.position; 
-        if(Vector3.Distance(this.transform.position, nodePos) > 0.2f)
+        if(Vector3.Distance(this.transform.position, nodePos) <= 0.2f)
         {
-            transform.Translate(direction * moveSpeed * Time.deltaTime);
-        }
-        else
-        {
-            transform.Translate(direction * moveSpeed * Time.deltaTime);
             if(nodeIndex +1 == nodes.Length)
             {
                 Survived();
             }
             nodeIndex++;
-        } 
+        }
+        
+        transform.position = Vector3.MoveTowards(transform.position, nodePos, moveSpeed * Time.deltaTime);
+
     }
 
     public int GetNodeIndex()

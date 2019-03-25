@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Enemy_v1
   m_EditorClassIdentifier: 
   Health: 5
-  Speed: 4
+  Speed: 2
   Worth: 5
   Object: {fileID: 4894938758827724509, guid: 7956803454681d64ea3f5769f909eb27, type: 3}

@@ -41,6 +41,14 @@ public class Tower : MonoBehaviour
         this.GetComponent<MeshRenderer>().enabled = true;
     }
 
+    private void SetPowerState(PowerState newState)     //TODO: Setup Power State switcher
+    {
+        switch(newState)
+        {
+
+        }
+    }
+
 #region Updates
     public virtual void Update()
     {
@@ -84,15 +92,16 @@ public class Tower : MonoBehaviour
    }
 
 
-    public void UpdateEnergy(int newValue)
+    public void UpdateEnergy(int newValue)          //TODO: Use powerstate switcher to set damage modifier & colour
     {
-        curEnergyCharge = newValue;
-        if(curEnergyCharge > FullPowerThreshhold)
+       // curEnergyCharge = newValue;
+        float powerPercent = FullPowerThreshhold / newValue;
+        if(powerPercent >= FullPowerThreshhold)
         {
             powerState = PowerState.FULL;
             this.GetComponent<MeshRenderer>().material.color = Color.cyan;
         }
-        else if(curEnergyCharge < LowPowerThreshhold)
+        else if(powerPercent < LowPowerThreshhold)
         {
             powerState = PowerState.OFF;
             this.GetComponent<MeshRenderer>().material.color = Color.red;
@@ -138,7 +147,7 @@ public class Tower : MonoBehaviour
 
 #endregion
 
- private GameObject GetTarget()
+    private GameObject GetTarget()
    {
        int targetNode = 0;
        GameObject target = null;
