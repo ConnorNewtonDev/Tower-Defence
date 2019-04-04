@@ -4,13 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Tower : MonoBehaviour
 {
-    public int Cost;
+
     public Canvas optionsCanvas;
     public enum PowerState{FULL, PARTIAL, OFF};
     public PowerState powerState;
+    public int Cost;
     public int FullPowerThreshhold;
     public int LowPowerThreshhold;
+    private float powerPercent;
 
+    private bool placed = false;
     public GameObject projectile;
     private Transform firePoint;
     private int curEnergyCharge;
@@ -22,6 +25,7 @@ public class Tower : MonoBehaviour
     public List<GameObject> inRange;
     private SphereCollider range;
 
+    private int occupiedCount = 0;
     private enum Targeting {FIRST, MIDDLE, LAST};
     private Targeting targetingChocie = Targeting.FIRST;
 
@@ -29,32 +33,34 @@ public class Tower : MonoBehaviour
     void Start()
     {
         inRange = new List<GameObject>();
-        this.GetComponent<MeshRenderer>().enabled = false;
+        //this.GetComponent<MeshRenderer>().enabled = false;
+        this.GetComponent<MeshRenderer>().material.color = Color.cyan;
         range = this.GetComponent<SphereCollider>();
         //TODO: Set radius here
         ToggleOptions();
         upgradeCosts =  new int[]{(Cost), (Cost * 3), (Cost * 3)};
         firePoint = this.transform.Find("FirePoint").gameObject.transform;
     }
-    public void Spawn()
+    public bool Spawn()
     {
-        this.GetComponent<MeshRenderer>().enabled = true;
-    }
+        if(occupiedCount > 0)
+            return false;
+        else
+        {           
+            placed = true;
+            this.GetComponent<SphereCollider>().enabled = true;
+            return true;
+        }        
 
-    private void SetPowerState(PowerState newState)     //TODO: Setup Power State switcher
-    {
-        switch(newState)
-        {
-
-        }
     }
 
 #region Updates
     public virtual void Update()
     {
+
         DetectTouch();
 
-            HandleAttack();
+        HandleAttack();
     }
 
     private void DetectTouch()
@@ -95,7 +101,7 @@ public class Tower : MonoBehaviour
     public void UpdateEnergy(int newValue)          //TODO: Use powerstate switcher to set damage modifier & colour
     {
        // curEnergyCharge = newValue;
-        float powerPercent = FullPowerThreshhold / newValue;
+        powerPercent = (newValue /FullPowerThreshhold) * 100;
         if(powerPercent >= FullPowerThreshhold)
         {
             powerState = PowerState.FULL;
@@ -109,7 +115,7 @@ public class Tower : MonoBehaviour
         else
         {
             powerState = PowerState.PARTIAL;
-            this.GetComponent<MeshRenderer>().material.color = Color.grey;
+            this.GetComponent<MeshRenderer>().material.color = Color.magenta;
         }            
     }
 
@@ -147,6 +153,7 @@ public class Tower : MonoBehaviour
 
 #endregion
 
+#region Combat
     private GameObject GetTarget()
    {
        int targetNode = 0;
@@ -188,21 +195,59 @@ public class Tower : MonoBehaviour
     }
 
 
+#endregion
+
+#region Collision
+    private void AdjustOccupied(int val)
+    {
+        if(placed)
+            return;
+
+        occupiedCount += val;
+        if(occupiedCount != 0)
+        {
+            this.GetComponent<MeshRenderer>().material.color = Color.red;
+        }        
+        else
+        {
+            this.GetComponent<MeshRenderer>().material.color = Color.cyan;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        switch(other.tag)
+        {
+            case "Enemy":
+                inRange.Add(other.transform.parent.gameObject);
+                other.transform.parent.GetComponent<Enemy>().deathEvent += OnEnemyKilled;
+            break;
+            case "Occupied":
+                if(other == other.GetComponent<BoxCollider>())
+                    AdjustOccupied(1);
+            break;
+        }
         if(other.tag == "Enemy")
         {
-            inRange.Add(other.transform.parent.gameObject);
-            other.transform.parent.GetComponent<Enemy>().deathEvent += OnEnemyKilled;
+
         }
     }
 
     private void OnTriggerExit(Collider other)
-    {
-        if(other.tag == "Enemy")
+    {        
+        switch(other.tag)
         {
-            inRange.Remove(other.gameObject.transform.parent.gameObject);
-            other.transform.parent.GetComponent<Enemy>().deathEvent -= OnEnemyKilled;
+            case "Enemy":
+                inRange.Remove(other.gameObject.transform.parent.gameObject);
+                other.transform.parent.GetComponent<Enemy>().deathEvent -= OnEnemyKilled;
+                break;
+            case "Occupied":
+                if(other == other.GetComponent<BoxCollider>())
+                    AdjustOccupied(-1);
+                break;
         }
     }
+
+#endregion
+
 }

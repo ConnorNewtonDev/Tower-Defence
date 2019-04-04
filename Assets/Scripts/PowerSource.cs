@@ -32,20 +32,29 @@ void Update()
 
 private void HandleTowerPlacement()
 {
- if ( Input.GetMouseButtonDown (0))
-    { 
+    if(socketTower != null)
+    {
+        LayerMask layerMask = ~(1 << 10);
         RaycastHit hit; 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);             
-        if ( Physics.Raycast (ray,out hit,100.0f)) 
+        if ( Physics.Raycast (ray,out hit,100.0f, layerMask)) 
         {
             socketTower.transform.position = hit.point + new Vector3(0, 1, 0);
-            socketTower.GetComponent<Tower>().Spawn();
-            Towers.Add(socketTower);
-            curEnergy = UpdatePower();
-
-            socketTower = null;
-        }           
-
+            
+        
+            //Handle placement attempt
+            if(Input.GetMouseButtonDown(0))
+            {
+                socketTower.transform.position = hit.point + new Vector3(0, 1, 0);            
+                //If tower is in a valis spawn position
+                if(socketTower.GetComponent<Tower>().Spawn())
+                {
+                    Towers.Add(socketTower);
+                    curEnergy = UpdatePower();                    
+                    socketTower = null;
+                }
+            }
+        }
     }
 }
 
