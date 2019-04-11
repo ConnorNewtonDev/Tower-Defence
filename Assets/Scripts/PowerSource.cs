@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class PowerSource : MonoBehaviour
 {
 private TowerDictionary towerDict;
@@ -10,7 +10,7 @@ public List<GameObject> Towers = new List<GameObject>();
 private GameObject socketTower;
 private int Energy = 100;
 public int curEnergy;
-
+public TextMeshProUGUI energyText;
 public int currency = 0;
 private Vector2 mousePos;
 private LayerMask inputLayerMasks;
@@ -18,7 +18,7 @@ void Start()
 {
     player = FindObjectOfType<PlayerData>();
     towerDict = FindObjectOfType<TowerDictionary>();
-    curEnergy = Energy;
+    UpdateUIText(curEnergy = Energy);
 }
 
 // Update is called once per frame
@@ -28,6 +28,11 @@ void Update()
     {           
         HandleTowerPlacement();
     }
+}
+
+void UpdateUIText(int val)
+{
+    energyText.text = val.ToString() + " / " + Energy.ToString();
 }
 
 private void HandleTowerPlacement()
@@ -49,8 +54,8 @@ private void HandleTowerPlacement()
                 //If tower is in a valis spawn position
                 if(socketTower.GetComponent<Tower>().Spawn())
                 {
-                    Towers.Add(socketTower);
-                    curEnergy = UpdatePower();                    
+                    Towers.Add(socketTower);        
+                    UpdateUIText(curEnergy = UpdatePower());           
                     socketTower = null;
                 }
             }
@@ -72,13 +77,17 @@ public void TowerSpawnBtn()
 public int UpdatePower()
 {
     if(Towers.Count == 0)
+    {
         return Energy;          //Return Full Energy
+    }
+
 
     int newVal = Energy / Towers.Count;
     foreach(GameObject tower in Towers)
     {   
         tower.GetComponent<Tower>().UpdateEnergy(newVal);
     }
+
     return newVal;
 }
 

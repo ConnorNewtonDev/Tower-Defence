@@ -1,14 +1,18 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class PlayerData : MonoBehaviour
 {
     public int Currency;
     public Canvas UICanvas;
+    public TextMeshProUGUI currencyText;
+
 
     void Start()
     {
-        Currency = 100;
+         Currency = 100;
+         currencyText.text = Currency.ToString();
     }
 
 
@@ -19,7 +23,7 @@ public class PlayerData : MonoBehaviour
         else
             Currency -= value;
 
-        Debug.Log("Current Currency: " + Currency);
+        currencyText.text = Currency.ToString();
     }
 
 
