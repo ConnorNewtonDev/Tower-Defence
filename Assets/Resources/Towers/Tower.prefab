@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: c43bcc76b68c36f4eae932d1a63c3ecb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   powerState: 0
   Cost: 10
   FullPowerThreshhold: 40
-  LowPowerThreshhold: 0
+  LowPowerThreshhold: 10
   projectile: {fileID: 5916375884624167896, guid: 1d4d3ec575401ca4eb4768421c3ad148, type: 3}
   inRange: []
 --- !u!135 &4273337594857011194
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 1459842838520770764}
   - component: {fileID: 1861754250258823}
   - component: {fileID: 8593255375417820616}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Upgrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +311,7 @@ GameObject:
   - component: {fileID: 7849575584402903991}
   - component: {fileID: 1958293197310189292}
   - component: {fileID: 80514004144932656}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +390,7 @@ GameObject:
   - component: {fileID: 1860962867192907784}
   - component: {fileID: 7854661682701927734}
   - component: {fileID: 5061456529780448930}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +476,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!1 &3978405620097294706
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +488,7 @@ GameObject:
   - component: {fileID: 4297104640085463234}
   - component: {fileID: 3809126928459321754}
   - component: {fileID: 3113312540875738342}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -566,7 +566,7 @@ GameObject:
   - component: {fileID: 4444734389153269625}
   - component: {fileID: 2663639812879181897}
   - component: {fileID: 6005243336890443683}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -641,7 +641,7 @@ GameObject:
   - component: {fileID: 4015241759177351853}
   - component: {fileID: 8239081144821427130}
   - component: {fileID: 8033649255261308902}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Destroy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
