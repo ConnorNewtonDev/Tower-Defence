@@ -207,6 +207,7 @@ public class Tower : MonoBehaviour
         if(occupiedCount != 0)
         {
             this.GetComponent<MeshRenderer>().material.color = Color.red;
+            Debug.Log("CANT PLACE");
         }        
         else
         {
